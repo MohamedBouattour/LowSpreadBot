@@ -32,7 +32,7 @@ def strategy(symbol, qty=qty, entried=False, rio = 1):
                 self=client, symbol=symbol, side=SIDE_BUY, type=ORDER_TYPE_MARKET, quantity=qty)
             targetPrice = format(float(order['fills'][0]['price']) * 1.004, '.8f')
             #print(targetPrice)
-            rio = rio * float(targetPrice)/float(order['fills'][0]['price'])
+            rio = (rio * float(targetPrice)/float(order['fills'][0]['price'])) -0.001
             Client.create_order(self=client, symbol=symbol, side=SIDE_SELL, type=ORDER_TYPE_LIMIT, quantity=qty,   timeInForce=TIME_IN_FORCE_GTC, price=targetPrice)
             entried = True
             print(rio)
@@ -44,7 +44,7 @@ def strategy(symbol, qty=qty, entried=False, rio = 1):
         while True:
             time.sleep(60)
             orders = client.get_open_orders(symbol='XRPBTC')
-            print(len(orders))
+            print(rio)
             if len(orders) == 0:
                 entried = False
                 strategy('XRPBTC', qty, entried=False)
