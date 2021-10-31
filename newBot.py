@@ -22,15 +22,15 @@ def getMinuteData(symbol, interval, lookback):
 
 
 def strategy(symbol, qty=qty, entried=False, rio = 1):
-    df = getMinuteData(symbol, '1m', '30 min ago UTC')
+    df = getMinuteData(symbol, '1h', '10 hour ago UTC')
     compond = (df.Open.astype(float).pct_change() +
                1).astype(float).cumprod() - 1
     if not entried:
         print(compond[-1])
-        if compond[-1] < -0.003:
+        if compond[-1] < -0.01:
             order = Client.create_order(
                 self=client, symbol=symbol, side=SIDE_BUY, type=ORDER_TYPE_MARKET, quantity=qty)
-            targetPrice = format(float(order['fills'][0]['price']) * 1.004, '.8f')
+            targetPrice = format(float(order['fills'][0]['price']) * 1.005, '.8f')
             #print(targetPrice)
             rio = (rio * float(targetPrice)/float(order['fills'][0]['price'])) -0.001
             Client.create_order(self=client, symbol=symbol, side=SIDE_SELL, type=ORDER_TYPE_LIMIT, quantity=qty,   timeInForce=TIME_IN_FORCE_GTC, price=targetPrice)
