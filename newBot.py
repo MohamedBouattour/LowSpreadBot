@@ -25,33 +25,34 @@ def strategy(symbol, qty=qty, entried=False, rio = 1):
     df = getMinuteData(symbol, '1h', '10 hour ago UTC')
     compond = (df.Open.astype(float).pct_change() +
                1).astype(float).cumprod() - 1
+    print(compond[-1])
     if not entried:
-        print(compond[-1])
-        if compond[-1] < -0.01:
+        if compond[-1] < -0.03:
             order = Client.create_order(
                 self=client, symbol=symbol, side=SIDE_BUY, type=ORDER_TYPE_MARKET, quantity=qty)
-            targetPrice = format(float(order['fills'][0]['price']) * 1.005, '.8f')
-            #print(targetPrice)
+            targetPrice = format(float(order['fills'][0]['price']) * 1.02, '.8f')
+            print(targetPrice)
             rio = (rio * float(targetPrice)/float(order['fills'][0]['price'])) -0.001
             Client.create_order(self=client, symbol=symbol, side=SIDE_SELL, type=ORDER_TYPE_LIMIT, quantity=qty,   timeInForce=TIME_IN_FORCE_GTC, price=targetPrice)
             entried = True
             print(rio)
         else:
             print('No trade has been executed')
-            time.sleep(25)
+            time.sleep(900)
             strategy('XRPBTC', qty, entried=False, rio = rio)
     if entried:
         while True:
-            time.sleep(60)
+            print(rio)
+            time.sleep(900)
             orders = client.get_open_orders(symbol='XRPBTC')
             print(rio)
-            if len(orders) == 0:
+            if len(orders) < 3:
                 entried = False
                 strategy('XRPBTC', qty, entried=False)
 
 
 orders = client.get_open_orders(symbol='XRPBTC')
-if len(orders) == 0:
+if len(orders) < 3:
     hasOrders = False
 else:
     hasOrders = True
