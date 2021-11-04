@@ -23,7 +23,7 @@ def getMinuteData(symbol, interval, lookback):
 
 
 def strategy(symbol, qty=qty, entried=False, rio = 1):
-    bbData = requests.get("https://api.taapi.io/bbands2?secret="+getTaapiSecret()+"&exchange=binance&symbol=XRP/USDT&interval=15m&stddev=1")
+    bbData = requests.get("https://api.taapi.io/bbands2?secret="+getTaapiSecret()+"&exchange=binance&symbol=XRP/USDT&interval=5m&stddev=1")
     if rio >= 1.1:
         qty = qty + 1
         rio = 1
