@@ -41,7 +41,7 @@ def strat(symbol,amount,entred):
                 strat(symbol, amount*1.02, entred)
             
 
-orders = client.get_open_orders(symbol='XRPBTC')
+orders = client.get_open_orders(symbol=symbol)
 if len(orders) == 0:
     hasOrders = False
 else:
