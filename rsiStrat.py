@@ -14,7 +14,7 @@ buys = []
 sells = []
 client = getBianceClient()
 def strat(symbol,amount,entred):
-    df = getMinuteData(symbol, '1h', '15 hour ago UTC')
+    df = getMinuteData(symbol, '4h', '15 day ago UTC')
     for index, row in df.iterrows():
         row['Close'] = float(row['Close'])
         row['Open'] = float(row['Open'])
@@ -45,4 +45,4 @@ if len(orders) == 0:
     hasOrders = False
 else:
     hasOrders = True
-strat(symbol, amount, entried=hasOrders, rio = 1)
+strat(symbol, amount, entred=hasOrders)
